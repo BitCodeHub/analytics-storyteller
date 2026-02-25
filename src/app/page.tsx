@@ -122,7 +122,7 @@ export default function Home() {
             <span className="text-white font-semibold text-lg tracking-tight">Analytics Storyteller</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-neutral-500 text-sm">Powered by Claude AI</span>
+            <span className="text-neutral-500 text-sm"></span>
           </div>
         </div>
       </nav>
@@ -361,7 +361,7 @@ export default function Home() {
       <footer className="border-t border-neutral-800 mt-24">
         <div className="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between text-neutral-500 text-sm">
           <span>© 2026 Lumen AI Solutions</span>
-          <span>Built with Claude AI</span>
+          <span></span>
         </div>
       </footer>
     </main>
