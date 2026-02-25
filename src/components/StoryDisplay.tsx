@@ -1,6 +1,6 @@
 'use client';
 
-import { Sparkles, Lightbulb, Target } from 'lucide-react';
+import { Sparkles, Lightbulb, Target, ArrowRight } from 'lucide-react';
 
 type StoryDisplayProps = {
   story: string;
@@ -12,14 +12,19 @@ export function StoryDisplay({ story, insights, recommendations }: StoryDisplayP
   return (
     <div className="space-y-6">
       {/* Main Story */}
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 border border-purple-500/30 shadow-xl">
-        <div className="flex items-center gap-3 mb-6">
-          <Sparkles className="w-6 h-6 text-purple-400" />
-          <h2 className="text-2xl font-bold text-white">The Story Behind Your Data</h2>
+      <div className="bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden">
+        <div className="p-6 border-b border-neutral-800 flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-white">Analysis Summary</h2>
+            <p className="text-neutral-500 text-sm">AI-generated narrative from your data</p>
+          </div>
         </div>
-        <div className="prose prose-invert prose-purple max-w-none">
+        <div className="p-6">
           {story.split('\n\n').map((paragraph, i) => (
-            <p key={i} className="text-slate-300 leading-relaxed text-lg mb-4">
+            <p key={i} className="text-neutral-300 leading-relaxed mb-4 last:mb-0">
               {paragraph}
             </p>
           ))}
@@ -28,39 +33,43 @@ export function StoryDisplay({ story, insights, recommendations }: StoryDisplayP
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Key Insights */}
-        <div className="bg-slate-800/50 rounded-xl p-6 border border-blue-500/30">
-          <div className="flex items-center gap-2 mb-4">
-            <Lightbulb className="w-5 h-5 text-blue-400" />
-            <h3 className="text-lg font-semibold text-white">Key Insights</h3>
+        <div className="bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden">
+          <div className="p-5 border-b border-neutral-800 flex items-center gap-3">
+            <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+              <Lightbulb className="w-4 h-4 text-emerald-500" />
+            </div>
+            <h3 className="font-semibold text-white">Key Insights</h3>
           </div>
-          <ul className="space-y-3">
+          <div className="p-5 space-y-4">
             {insights.map((insight, i) => (
-              <li key={i} className="flex gap-3 text-slate-300">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-medium">
+              <div key={i} className="flex gap-4">
+                <span className="flex-shrink-0 w-6 h-6 rounded-lg bg-neutral-800 text-neutral-400 flex items-center justify-center text-xs font-medium">
                   {i + 1}
                 </span>
-                <span>{insight}</span>
-              </li>
+                <p className="text-neutral-300 text-sm leading-relaxed">{insight}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* Recommendations */}
-        <div className="bg-slate-800/50 rounded-xl p-6 border border-green-500/30">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="w-5 h-5 text-green-400" />
-            <h3 className="text-lg font-semibold text-white">Recommendations</h3>
+        <div className="bg-neutral-900 rounded-2xl border border-neutral-800 overflow-hidden">
+          <div className="p-5 border-b border-neutral-800 flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <Target className="w-4 h-4 text-blue-500" />
+            </div>
+            <h3 className="font-semibold text-white">Recommendations</h3>
           </div>
-          <ul className="space-y-3">
+          <div className="p-5 space-y-4">
             {recommendations.map((rec, i) => (
-              <li key={i} className="flex gap-3 text-slate-300">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-sm font-medium">
-                  ✓
+              <div key={i} className="flex gap-4">
+                <span className="flex-shrink-0 w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                  <ArrowRight className="w-3 h-3" />
                 </span>
-                <span>{rec}</span>
-              </li>
+                <p className="text-neutral-300 text-sm leading-relaxed">{rec}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>

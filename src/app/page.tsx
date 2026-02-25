@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Upload, FileSpreadsheet, Sparkles, TrendingUp, BarChart3 } from 'lucide-react';
+import { Upload, FileSpreadsheet, Sparkles, TrendingUp, BarChart3, Zap, Shield, Clock } from 'lucide-react';
 import Papa from 'papaparse';
 import { DataVisualization } from '@/components/DataVisualization';
 import { StoryDisplay } from '@/components/StoryDisplay';
@@ -91,7 +91,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           headers,
-          data: csvData.slice(0, 100), // Limit to first 100 rows
+          data: csvData.slice(0, 100),
           totalRows: csvData.length,
         }),
       });
@@ -111,152 +111,236 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="w-10 h-10 text-purple-400" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Analytics Storyteller
-            </h1>
+    <main className="min-h-screen bg-[#0a0a0a]">
+      {/* Navigation */}
+      <nav className="border-b border-neutral-800 bg-[#0a0a0a]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-black" />
+            </div>
+            <span className="text-white font-semibold text-lg tracking-tight">Analytics Storyteller</span>
           </div>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Transform your data into compelling narratives. Upload a CSV and let AI uncover the story hidden in your numbers.
-          </p>
+          <div className="flex items-center gap-4">
+            <span className="text-neutral-500 text-sm">Powered by Claude AI</span>
+          </div>
         </div>
+      </nav>
 
-        {/* Upload Zone */}
-        {!result && (
-          <div
-            className={cn(
-              'max-w-2xl mx-auto border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300',
-              dragActive
-                ? 'border-purple-400 bg-purple-900/30'
-                : 'border-slate-600 hover:border-purple-500 bg-slate-800/50'
-            )}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          >
-            {!file ? (
-              <>
-                <Upload className="w-16 h-16 mx-auto mb-4 text-purple-400" />
-                <h2 className="text-xl font-semibold text-white mb-2">
-                  Drop your CSV file here
-                </h2>
-                <p className="text-slate-400 mb-6">or click to browse</p>
-                <label className="inline-block">
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-                  <span className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg cursor-pointer transition-colors">
-                    Select File
-                  </span>
-                </label>
-              </>
-            ) : (
-              <>
-                <FileSpreadsheet className="w-16 h-16 mx-auto mb-4 text-green-400" />
-                <h2 className="text-xl font-semibold text-white mb-2">{file.name}</h2>
-                <p className="text-slate-400 mb-4">
-                  {csvData.length} rows × {headers.length} columns
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        {/* Hero Section */}
+        {!file && !result && (
+          <>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full text-sm text-neutral-400 mb-6">
+                <Zap className="w-3.5 h-3.5 text-emerald-500" />
+                Enterprise-grade analytics
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-white tracking-tight mb-6">
+                Transform data into
+                <br />
+                <span className="bg-gradient-to-r from-neutral-200 to-neutral-500 bg-clip-text text-transparent">
+                  actionable insights
+                </span>
+              </h1>
+              <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                Upload your CSV and let AI analyze patterns, identify trends, and generate 
+                compelling narratives that drive business decisions.
+              </p>
+            </div>
+
+            {/* Upload Zone */}
+            <div
+              className={cn(
+                'max-w-2xl mx-auto border rounded-2xl p-16 text-center transition-all duration-200',
+                dragActive
+                  ? 'border-white bg-neutral-900/50'
+                  : 'border-neutral-800 hover:border-neutral-700 bg-neutral-900/30'
+              )}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+            >
+              <div className="w-16 h-16 mx-auto mb-6 bg-neutral-800 rounded-2xl flex items-center justify-center">
+                <Upload className="w-7 h-7 text-neutral-400" />
+              </div>
+              <h2 className="text-xl font-semibold text-white mb-2">
+                Drop your CSV file here
+              </h2>
+              <p className="text-neutral-500 mb-8">or click to browse your files</p>
+              <label className="inline-block">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                <span className="px-6 py-3 bg-white hover:bg-neutral-100 text-black font-medium rounded-lg cursor-pointer transition-colors inline-flex items-center gap-2">
+                  <FileSpreadsheet className="w-4 h-4" />
+                  Select CSV File
+                </span>
+              </label>
+            </div>
+
+            {/* Features Grid */}
+            <div className="mt-24 grid md:grid-cols-3 gap-6">
+              <div className="p-6 bg-neutral-900/50 rounded-xl border border-neutral-800">
+                <div className="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4">
+                  <TrendingUp className="w-5 h-5 text-emerald-500" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Pattern Recognition</h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  AI automatically identifies trends, correlations, and anomalies in your data.
                 </p>
-                
-                {/* Preview Table */}
-                <div className="bg-slate-900/50 rounded-lg p-4 mb-6 overflow-x-auto max-h-48 overflow-y-auto">
-                  <table className="w-full text-sm text-left">
+              </div>
+              <div className="p-6 bg-neutral-900/50 rounded-xl border border-neutral-800">
+                <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                  <Sparkles className="w-5 h-5 text-blue-500" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Narrative Generation</h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Transform complex data into clear, actionable stories for stakeholders.
+                </p>
+              </div>
+              <div className="p-6 bg-neutral-900/50 rounded-xl border border-neutral-800">
+                <div className="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center mb-4">
+                  <BarChart3 className="w-5 h-5 text-amber-500" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Smart Visualizations</h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Auto-generated charts that highlight the insights that matter most.
+                </p>
+              </div>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="mt-16 flex items-center justify-center gap-8 text-neutral-500 text-sm">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                <span>Data never stored</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                <span>Analysis in seconds</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                <span>Enterprise ready</span>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* File Selected State */}
+        {file && !result && (
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden">
+              {/* File Header */}
+              <div className="p-6 border-b border-neutral-800 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                    <FileSpreadsheet className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <div>
+                    <h2 className="text-white font-semibold">{file.name}</h2>
+                    <p className="text-neutral-500 text-sm">
+                      {csvData.length.toLocaleString()} rows × {headers.length} columns
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setFile(null);
+                    setCsvData([]);
+                    setHeaders([]);
+                  }}
+                  className="text-neutral-500 hover:text-white text-sm transition-colors"
+                >
+                  Change file
+                </button>
+              </div>
+
+              {/* Data Preview */}
+              <div className="p-6 border-b border-neutral-800">
+                <h3 className="text-neutral-400 text-sm font-medium mb-4">Data Preview</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
                     <thead>
-                      <tr>
-                        {headers.slice(0, 5).map((h) => (
-                          <th key={h} className="px-3 py-2 text-purple-300 font-medium">
+                      <tr className="border-b border-neutral-800">
+                        {headers.slice(0, 6).map((h) => (
+                          <th key={h} className="px-4 py-3 text-left text-neutral-400 font-medium">
                             {h}
                           </th>
                         ))}
-                        {headers.length > 5 && (
-                          <th className="px-3 py-2 text-slate-500">...</th>
+                        {headers.length > 6 && (
+                          <th className="px-4 py-3 text-neutral-600">+{headers.length - 6} more</th>
                         )}
                       </tr>
                     </thead>
                     <tbody>
-                      {csvData.slice(0, 3).map((row, i) => (
-                        <tr key={i} className="border-t border-slate-700">
-                          {headers.slice(0, 5).map((h) => (
-                            <td key={h} className="px-3 py-2 text-slate-300">
-                              {String(row[h] ?? '')}
+                      {csvData.slice(0, 5).map((row, i) => (
+                        <tr key={i} className="border-b border-neutral-800/50">
+                          {headers.slice(0, 6).map((h) => (
+                            <td key={h} className="px-4 py-3 text-neutral-300 font-mono text-xs">
+                              {String(row[h] ?? '—')}
                             </td>
                           ))}
-                          {headers.length > 5 && (
-                            <td className="px-3 py-2 text-slate-500">...</td>
+                          {headers.length > 6 && (
+                            <td className="px-4 py-3 text-neutral-600">...</td>
                           )}
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+              </div>
 
-                <div className="flex gap-4 justify-center">
-                  <button
-                    onClick={() => {
-                      setFile(null);
-                      setCsvData([]);
-                      setHeaders([]);
-                    }}
-                    className="px-6 py-3 bg-slate-600 hover:bg-slate-500 text-white rounded-lg transition-colors"
-                  >
-                    Change File
-                  </button>
-                  <button
-                    onClick={analyzeData}
-                    disabled={analyzing}
-                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {analyzing ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-5 h-5" />
-                        Generate Story
-                      </>
-                    )}
-                  </button>
-                </div>
-              </>
-            )}
+              {/* Action */}
+              <div className="p-6">
+                <button
+                  onClick={analyzeData}
+                  disabled={analyzing}
+                  className="w-full py-4 bg-white hover:bg-neutral-100 text-black font-semibold rounded-xl transition-colors flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {analyzing ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-neutral-300 border-t-black rounded-full animate-spin" />
+                      Analyzing your data...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5" />
+                      Generate Analysis
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Error Display */}
         {error && (
-          <div className="max-w-2xl mx-auto mt-6 p-4 bg-red-900/30 border border-red-500/50 rounded-lg text-red-300">
+          <div className="max-w-3xl mx-auto mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
             {error}
           </div>
         )}
 
         {/* Results */}
         {result && (
-          <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
-            {/* Story Section */}
+          <div className="max-w-5xl mx-auto space-y-8">
             <StoryDisplay
               story={result.story}
               insights={result.insights}
               recommendations={result.recommendations}
             />
 
-            {/* Visualization */}
             {result.chartData && (
               <DataVisualization chartData={result.chartData} />
             )}
 
-            {/* Actions */}
-            <div className="text-center">
+            <div className="text-center pt-8">
               <button
                 onClick={() => {
                   setResult(null);
@@ -264,41 +348,22 @@ export default function Home() {
                   setCsvData([]);
                   setHeaders([]);
                 }}
-                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800 rounded-xl transition-colors"
               >
                 Analyze Another File
               </button>
             </div>
           </div>
         )}
-
-        {/* Features */}
-        {!file && (
-          <div className="max-w-4xl mx-auto mt-16 grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700">
-              <TrendingUp className="w-10 h-10 mx-auto mb-4 text-blue-400" />
-              <h3 className="text-lg font-semibold text-white mb-2">Trend Analysis</h3>
-              <p className="text-slate-400 text-sm">
-                AI identifies patterns, trends, and anomalies in your data automatically.
-              </p>
-            </div>
-            <div className="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700">
-              <Sparkles className="w-10 h-10 mx-auto mb-4 text-purple-400" />
-              <h3 className="text-lg font-semibold text-white mb-2">Narrative Generation</h3>
-              <p className="text-slate-400 text-sm">
-                Transform raw numbers into compelling stories anyone can understand.
-              </p>
-            </div>
-            <div className="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700">
-              <BarChart3 className="w-10 h-10 mx-auto mb-4 text-pink-400" />
-              <h3 className="text-lg font-semibold text-white mb-2">Smart Visualizations</h3>
-              <p className="text-slate-400 text-sm">
-                Auto-generated charts that highlight the most important insights.
-              </p>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-neutral-800 mt-24">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between text-neutral-500 text-sm">
+          <span>© 2026 Lumen AI Solutions</span>
+          <span>Built with Claude AI</span>
+        </div>
+      </footer>
     </main>
   );
 }
