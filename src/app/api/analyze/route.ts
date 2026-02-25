@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Azure Anthropic configuration
+const AZURE_ENDPOINT = process.env.AZURE_ANTHROPIC_ENDPOINT || 'https://jimmylam-code-resource.openai.azure.com/anthropic/v1/messages';
+const AZURE_API_KEY = process.env.AZURE_ANTHROPIC_KEY;
 
 export async function POST(request: NextRequest) {
   try {
@@ -83,16 +82,32 @@ For chartData:
 
 Return ONLY valid JSON, no markdown or explanation.`;
 
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4096,
-      messages: [
-        { role: 'user', content: prompt }
-      ],
+    // Call Azure Anthropic endpoint
+    const response = await fetch(AZURE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': AZURE_API_KEY || '',
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4096,
+        messages: [
+          { role: 'user', content: prompt }
+        ],
+      }),
     });
 
-    // Extract text content
-    const textContent = response.content.find(c => c.type === 'text');
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Azure API error: ${response.status} - ${errorText}`);
+    }
+
+    const aiResponse = await response.json();
+
+    // Extract text content from Azure response
+    const textContent = aiResponse.content?.find((c: { type: string }) => c.type === 'text');
     if (!textContent || textContent.type !== 'text') {
       throw new Error('No text response from AI');
     }
