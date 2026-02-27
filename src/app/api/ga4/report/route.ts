@@ -7,7 +7,15 @@ function getAnalyticsClient() {
     throw new Error('GOOGLE_APPLICATION_CREDENTIALS_JSON not configured');
   }
   
-  const credentials = JSON.parse(credentialsJson);
+  // Handle escaped newlines in the private key
+  const fixedJson = credentialsJson.replace(/\\\\n/g, '\\n');
+  const credentials = JSON.parse(fixedJson);
+  
+  // Also fix any double-escaped newlines in the private_key itself
+  if (credentials.private_key) {
+    credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+  }
+  
   return new BetaAnalyticsDataClient({ credentials });
 }
 
