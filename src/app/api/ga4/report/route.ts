@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const [response] = await client.runReport({
       property: `properties/${propertyId}`,
       dateRanges: [{ startDate, endDate }],
-      metrics: metricNames.map(name => ({ name })),
+      metrics: metricNames.map((name: string) => ({ name })),
     });
 
     // Parse metrics from response
